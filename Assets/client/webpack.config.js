@@ -1,4 +1,3 @@
-// Update your webpack.config.js with the following code
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 const { InjectManifest } = require('workbox-webpack-plugin');
@@ -6,22 +5,23 @@ const path = require('path');
 
 module.exports = () => {
   return {
-    mode: 'development',
+    mode: 'production', // Switched to 'production' for deployment
     entry: {
       main: path.resolve(__dirname, 'src/js/index.js'),
       install: path.resolve(__dirname, 'src/js/install.js'),
     },
     output: {
-      filename: '[name].bundle.js',
+      filename: '[name].[contenthash].js', // Updated for cache busting
       path: path.resolve(__dirname, 'dist'),
+      publicPath: '/', // Ensure this matches your deployment path
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: './index.html',
+        template: path.resolve(__dirname, 'index.html'), // Ensure correct path
         title: 'JATE',
       }),
       new InjectManifest({
-        swSrc: './src-sw.js',
+        swSrc: path.resolve(__dirname, 'src-sw.js'),
         swDest: 'service-worker.js',
       }),
       new WebpackPwaManifest({
@@ -36,8 +36,8 @@ module.exports = () => {
         publicPath: '/',
         icons: [
           {
-            src: path.resolve('src/images/logo.png'),
-            sizes: [96, 128, 192, 256, 384, 512], // multiple sizes
+            src: path.resolve(__dirname, 'src/images/logo.png'),
+            sizes: [96, 128, 192, 256, 384, 512], // Ensure these sizes match your icons
           },
         ],
       }),
