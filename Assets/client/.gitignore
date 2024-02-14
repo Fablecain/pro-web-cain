@@ -67,3 +67,6 @@ yarn.lock
 .DS_Store
 .vscode
 *.xslx
+
+# Ignore node_modules directory
+client/node_modules/
